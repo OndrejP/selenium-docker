@@ -1,0 +1,34 @@
+echo "Stop active docker."
+docker stop $(docker ps -a -q) 2>/dev/null
+echo "Remove stopped docker"
+docker rm $(docker ps -a -q) 2>/dev/null
+
+sleep 3
+
+echo "start Selenium Stadalone"
+docker run -d -p 4444:4444 ondrejp/selenium-standalone-firefox
+
+echo "start Selenium Stadalone Debug"
+docker run -d -p 4466:4444 -p 5931:5900 ondrejp/selenium-standalone-firefox-debug
+
+echo "start Selenium hub/nodes"
+docker run -d -p 4488:4488 --name selenium-hub ondrejp/selenium-hub
+
+for I in 1 2; do
+ docker run -d --link selenium-hub:hub ondrejp/selenium-node-firefox
+ docker run -d --link selenium-hub:hub ondrejp/selenium-node-firefox:beta
+ docker run -d --link selenium-hub:hub ondrejp/selenium-node-chrome
+ docker run -d --link selenium-hub:hub ondrejp/selenium-node-chrome:beta
+done
+
+echo "Start selenium firefox debug vnc:5933"
+docker run -d \
+ -p 5933:5900 \
+ -v $(pwd)/selenium-node-firefox-debug/.mozilla:/home/seluser/.mozilla \
+ --link selenium-hub:hub ondrejp/selenium-node-firefox-debug
+
+echo "Start selenium chrome debug vnc:5934"
+docker run -d \
+ -p 5934:5900 \
+ -v $(pwd)/selenium-node-chrome-debug/.config/google-chrome:/home/seluser/.config/google-chrome \
+ --link selenium-hub:hub ondrejp/selenium-node-chrome-debug

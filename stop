@@ -1,0 +1,5 @@
+echo "Stop active docker."
+docker stop $(docker ps -a -q) 2>/dev/null
+echo "Remove stopped docker"
+docker rm $(docker ps -a -q) 2>/dev/null
+
