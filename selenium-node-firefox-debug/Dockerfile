@@ -35,12 +35,19 @@ RUN apt-get update -qqy \
     xfonts-scalable \
   && rm -rf /var/lib/apt/lists/*
 
+#===============
+# Browser detail
+#===============
+ENV BROWSERDETAIL="-browser browserName=firefox,version=debug,platform=LINUX,maxInstances=1"
+
 #==============================
 # Scripts to run Selenium Node
 #==============================
-COPY entry_point.sh /opt/bin/entry_point.sh
-RUN chmod +x /opt/bin/entry_point.sh
+COPY entry_point.sh /selen-node-debug
+RUN chmod +x /selen-node-debug
 
 USER seluser
 
 EXPOSE 5900
+
+CMD /selen-node-debug

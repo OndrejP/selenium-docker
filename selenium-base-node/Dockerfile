@@ -52,8 +52,8 @@ RUN apt-get update -qqy \
 #==============================
 # Scripts to run Selenium Node
 #==============================
-COPY entry_point.sh /opt/bin/entry_point.sh
-RUN chmod +x /opt/bin/entry_point.sh
+COPY entry_point.sh /selen-node
+RUN chmod +x /selen-node
 
 #============================
 # Some configuration options
@@ -61,8 +61,8 @@ RUN chmod +x /opt/bin/entry_point.sh
 ENV SCREEN_WIDTH 1360
 ENV SCREEN_HEIGHT 1020
 ENV SCREEN_DEPTH 24
-ENV DISPLAY :99.0
+ENV DISPLAY :0
 
 USER seluser
 
-CMD ["/opt/bin/entry_point.sh"]
+CMD ["/selen-node"]

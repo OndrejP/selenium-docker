@@ -52,8 +52,8 @@ RUN apt-get update -qqy \
 #==============================
 # Scripts to run Selenium Node
 #==============================
-COPY entry_point.sh /opt/bin/entry_point.sh
-RUN chmod +x /opt/bin/entry_point.sh
+COPY entry_point.sh /sa-ff
+RUN chmod +x /sa-ff
 
 #============================
 # Some configuration options
@@ -61,7 +61,7 @@ RUN chmod +x /opt/bin/entry_point.sh
 ENV SCREEN_WIDTH 1360
 ENV SCREEN_HEIGHT 1020
 ENV SCREEN_DEPTH 24
-ENV DISPLAY :99.0
+ENV DISPLAY :0
 
 USER seluser
 WORKDIR /home/seluser/
@@ -71,7 +71,7 @@ WORKDIR /home/seluser/
 #=========
 RUN wget -q -O firefox.tar.bz2 \
  http://ftp.mozilla.org/pub/mozilla.org/firefox/releases/36.0/linux-x86_64/en-US/firefox-36.0.tar.bz2 \
- && tar -jxf firefox.tar.bz2
+ && tar -jxf firefox.tar.bz2 \
+ && sudo ln -s /home/seluser/firefox/firefox-bin /usr/bin/firefox
 
-
-CMD ["/opt/bin/entry_point.sh"]
+CMD ["/sa-ff"]

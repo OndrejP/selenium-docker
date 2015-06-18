@@ -3,7 +3,7 @@
 echo "
 {
   \"host\": null,
-  \"port\": 4488,
+  \"port\": 4444,
   \"prioritizer\": null,
   \"capabilityMatcher\": \"org.openqa.grid.internal.utils.DefaultCapabilityMatcher\",
   \"throwOnCapabilityNotPresent\": true,

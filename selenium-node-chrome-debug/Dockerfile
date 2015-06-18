@@ -17,7 +17,7 @@ RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key
 #==================
 # Chrome webdriver
 #==================
-ENV CHROME_DRIVER_VERSION 2.15
+ENV CHROME_DRIVER_VERSION 2.16
 RUN wget --no-verbose -O /tmp/chromedriver_linux64.zip http://chromedriver.storage.googleapis.com/$CHROME_DRIVER_VERSION/chromedriver_linux64.zip \
   && rm -rf /opt/selenium/chromedriver \
   && unzip /tmp/chromedriver_linux64.zip -d /opt/selenium \
@@ -52,12 +52,15 @@ RUN apt-get update -qqy \
     xterm \
   && rm -rf /var/lib/apt/lists/*
 
+#===============
+# Browser detail
+#===============
+ENV BROWSERDETAIL="-browser browserName=chrome,version=debug,platform=LINUX,maxInstances=1"
 
 #========================
 # Selenium Configuration
 #========================
 COPY config.json /home/seluser/config.json
-COPY config.sh /home/seluser/config.sh
 
 #=================================
 # Chrome Launch Script Modication
@@ -70,11 +73,13 @@ RUN chown seluser: /opt/google/chrome/google-chrome
 #==============================
 # Scripts to run Selenium Node
 #==============================
-COPY entry_point.sh /opt/bin/entry_point.sh
-RUN chmod +x /opt/bin/entry_point.sh
+COPY entry_point.sh /selen-node-debug
+RUN chmod +x /selen-node-debug
 
 USER seluser
 
 RUN mkdir /home/seluser/.config
 
 EXPOSE 5900
+
+CMD /selen-node-debug
