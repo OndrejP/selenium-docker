@@ -20,7 +20,6 @@ function shutdown {
 
 java -jar /opt/selenium/selenium-server-standalone.jar \
  -Djava.net.preferIPv4Stack=true \
- -port=4466 \
  -singleWindow -timeout 60 \
  &
 NODE_PID=$!
@@ -35,3 +34,4 @@ trap shutdown SIGTERM SIGINT
 trap shutdown SIGTERM SIGINT
 wait $NODE_PID
 
+EXPOSE 4444
